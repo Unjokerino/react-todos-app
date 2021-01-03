@@ -18,6 +18,7 @@ const ListItem = styled.div`
 function Sidebar({ items, colors, onAddItem, setActive }) {
   return (
     <SidebarWrapper>
+      <h3>Задачи:</h3>
       <ListItem>
         <List items={items} setActive={setActive} />
       </ListItem>

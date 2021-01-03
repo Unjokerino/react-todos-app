@@ -31,8 +31,8 @@ function App() {
   const colors = ['#f0f', '#000', '#f00'];
 
   useEffect(() => {
-    setTodos(JSON.parse(localStorage.getItem('todos')));
-    setTodosNotes(JSON.parse(localStorage.getItem('todosNotes')));
+    setTodos(JSON.parse(localStorage.getItem('todos')) || []);
+    setTodosNotes(JSON.parse(localStorage.getItem('todosNotes')) || []);
     setLoading(false);
   }, []);
 
