@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { List, AddItem } from './shared';
@@ -15,7 +15,7 @@ const ListItem = styled.div`
   margin-bottom: 20px;
 `;
 
-function Sidebar({ items, colors, onAddItem }) {
+function Sidebar({ items, colors, onAddItem, setActive }) {
   return (
     <SidebarWrapper>
       <ListItem>
@@ -27,12 +27,18 @@ function Sidebar({ items, colors, onAddItem }) {
               title: 'Все задачи',
             },
           ]}
+          setActive={() => setActive()}
         />
       </ListItem>
       <ListItem>
-        <List items={items} />
+        <List items={items} setActive={setActive} />
       </ListItem>
-      <AddItem colors={colors} onSubmit={onAddItem} />
+      <AddItem
+        title="Добавить папку"
+        placeholder="Новая папка..."
+        colors={colors}
+        onSubmit={onAddItem}
+      />
     </SidebarWrapper>
   );
 }

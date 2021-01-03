@@ -16,6 +16,12 @@ const Item = styled.div`
   font-weight: 600;
   cursor: pointer;
   transition: 0.1s;
+  span {
+    overflow: hidden;
+    white-space: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   & img {
     width: 15px;
     height: 15px;
@@ -31,14 +37,15 @@ const DotItem = styled(Dot)`
   position: relative;
   left: 3px;
   margin-right: 10px;
+  flex: 0 0 10px;
 `;
 
-function List({ items }) {
+function List({ items, setActive }) {
   return (
     <Ul>
-      {items.map(({ id, icon, alt, title, color }) => (
+      {items.map(({ id, icon, alt, title, color, active }) => (
         <li key={id}>
-          <Item>
+          <Item active={active} onClick={() => setActive(id)}>
             {icon && <img src={icon} alt={alt || 'icon'} />}
             {color && <DotItem color={color} />}
             <span>{title}</span>

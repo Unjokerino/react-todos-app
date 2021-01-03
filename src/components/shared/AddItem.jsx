@@ -111,7 +111,7 @@ const Error = styled.span`
   font-size: 10px;
 `;
 
-function AddItem({ colors, onSubmit }) {
+function AddItem({ colors, onSubmit, title, placeholder }) {
   const [isVisible, setIsVisible] = useState(false);
   const [value, setValue] = useState('');
   const [activeColor, setActiveColor] = useState(0);
@@ -134,7 +134,7 @@ function AddItem({ colors, onSubmit }) {
   function handleSubmit(e) {
     e.preventDefault(e);
     if (value.trim()) {
-      onSubmit(value, colors[activeColor]);
+      onSubmit(value, colors && colors[activeColor]);
       onClose();
       return;
     }
@@ -144,7 +144,7 @@ function AddItem({ colors, onSubmit }) {
     <>
       <Title onClick={() => setIsVisible(true)}>
         <img src={plusSvg} alt="добавить папку" aria-hidden="true" />
-        <span>Добавить папку</span>
+        <span>{title}</span>
       </Title>
       {isVisible && (
         <AddForm onSubmit={handleSubmit}>
@@ -155,19 +155,20 @@ function AddItem({ colors, onSubmit }) {
             type="text"
             value={value}
             onChange={handleChange}
-            placeholder="Новая папка...."
+            placeholder={placeholder}
           />
           {error && <Error>{error}</Error>}
           <Row>
-            {colors.map((color, index) => (
-              <Dot
-                color={color}
-                size="16px"
-                key={index}
-                className={`${index === activeColor ? 'active' : ''}`}
-                onClick={() => handleColor(index)}
-              />
-            ))}
+            {colors &&
+              colors.map((color, index) => (
+                <Dot
+                  color={color}
+                  size="16px"
+                  key={index}
+                  className={`${index === activeColor ? 'active' : ''}`}
+                  onClick={() => handleColor(index)}
+                />
+              ))}
           </Row>
           <button>Добавить</button>
         </AddForm>
