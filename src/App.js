@@ -22,42 +22,30 @@ const NoteContainer = styled.div`
   flex: 1 1 auto;
 `;
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, color: '#f0f', title: 'Учеба' },
-    { id: 2, color: '#000', title: 'Фронтенд' },
-    { id: 3, color: '#f00', title: 'Личное' },
-  ]);
+  const [todos, setTodos] = useState([]);
+  const [todosNotes, setTodosNotes] = useState([]);
+  const [listNotes, setListNotes] = useState([]);
+  const [activeItem, setActiveItem] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const colors = ['#f0f', '#000', '#f00'];
-
-  const [todosNotes, setTodosNotes] = useState([
-    {
-      todoId: 1,
-      list: [
-        { id: 1, text: 'Закончить проект', complited: false },
-        { id: 2, text: 'Сдать домашнее задания', complited: false },
-        { id: 3, text: 'Сделать историю', complited: true },
-      ],
-    },
-    {
-      todoId: 2,
-      list: [{ id: 1, text: 'Закончить проект', complited: false }],
-    },
-  ]);
-  const [activeItem, setActiveItem] = useState(todos[0]);
-  const [listNotes, setListNotes] = useState([]);
 
   useEffect(() => {
     setTodos(JSON.parse(localStorage.getItem('todos')));
     setTodosNotes(JSON.parse(localStorage.getItem('todosNotes')));
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-    localStorage.setItem('todosNotes', JSON.stringify(todosNotes));
+    if (todos.length && todosNotes.length) {
+      localStorage.setItem('todos', JSON.stringify(todos));
+      localStorage.setItem('todosNotes', JSON.stringify(todosNotes));
+      setActiveItem((prev) => prev || todos[0]);
+    }
   }, [todos, todosNotes]);
 
   useEffect(() => {
+    if (!todos.lenght && !activeItem) return;
     const candidate = todosNotes.find((note) => note.todoId === activeItem.id);
     setListNotes(candidate ? candidate.list : []);
     setTodos((prev) =>
@@ -148,27 +136,34 @@ function App() {
   return (
     <Container>
       <NotesWrapper>
-        <Sidebar
-          items={todos}
-          colors={colors}
-          onAddItem={addTodo}
-          setActive={setActive}
-        />
-        <NoteContainer>
-          {listNotes && (
-            <Note
-              title={activeItem.title}
-              color={activeItem.color}
-              items={listNotes}
-              onAddItem={(text) => onAddItem(activeItem.id, text)}
-              onToggleCompited={(id) => toggleComplited(activeItem.id, id)}
-              onChangeTitle={(title) => changeTitle(activeItem.id, title)}
-              onChangeTodo={(id, value) =>
-                onChangeTodo(activeItem.id, id, value)
-              }
+        {loading ? (
+          'Загрузка...'
+        ) : (
+          <>
+            {' '}
+            <Sidebar
+              items={todos}
+              colors={colors}
+              onAddItem={addTodo}
+              setActive={setActive}
             />
-          )}
-        </NoteContainer>
+            <NoteContainer>
+              {listNotes && activeItem && (
+                <Note
+                  title={activeItem.title}
+                  color={activeItem.color}
+                  items={listNotes}
+                  onAddItem={(text) => onAddItem(activeItem.id, text)}
+                  onToggleCompited={(id) => toggleComplited(activeItem.id, id)}
+                  onChangeTitle={(title) => changeTitle(activeItem.id, title)}
+                  onChangeTodo={(id, value) =>
+                    onChangeTodo(activeItem.id, id, value)
+                  }
+                />
+              )}
+            </NoteContainer>{' '}
+          </>
+        )}
       </NotesWrapper>
     </Container>
   );

@@ -19,18 +19,6 @@ function Sidebar({ items, colors, onAddItem, setActive }) {
   return (
     <SidebarWrapper>
       <ListItem>
-        <List
-          items={[
-            {
-              id: 1,
-              icon: menuSvg,
-              title: 'Все задачи',
-            },
-          ]}
-          setActive={() => setActive()}
-        />
-      </ListItem>
-      <ListItem>
         <List items={items} setActive={setActive} />
       </ListItem>
       <AddItem
