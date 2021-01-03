@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { Sidebar, Note } from './components';
@@ -19,10 +19,44 @@ const NotesWrapper = styled.div`
 `;
 
 function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, color: '#fff', title: 'Учеба' },
+    { id: 2, color: '#000', title: 'Фронтенд' },
+    { id: 3, color: '#f00', title: 'Личное' },
+  ]);
+
+  const colors = ['#fff', '#000', '#f00'];
+
+  const [todosNotes, setTodosNotes] = useState([
+    {
+      id: 1,
+      list: [{ id: 1, text: 'Закончить проект', complited: false }],
+      todoId: 1,
+    },
+    {
+      id: 2,
+      list: [{ id: 2, text: 'Сделать домашнее задания', complited: false }],
+      todoId: 1,
+    },
+    {
+      id: 3,
+      list: [{ id: 3, text: 'Сдать историю', complited: true }],
+      todoId: 1,
+    },
+  ]);
+
+  function addTodo(title, color) {
+    const newTodo = {
+      id: Date.now(),
+      color,
+      title,
+    };
+    setTodos([...todos, newTodo]);
+  }
   return (
     <Container>
       <NotesWrapper>
-        <Sidebar />
+        <Sidebar items={todos} colors={colors} onAddItem={addTodo} />
         <Note />
       </NotesWrapper>
     </Container>
