@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
-import { Sidebar, Note } from './components';
+import { Sidebar, Note } from "./components";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -28,24 +28,24 @@ function App() {
   const [activeItem, setActiveItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const colors = ['#f0f', '#000', '#f00'];
+  const colors = ["#f0f", "#000", "#f00"];
 
   useEffect(() => {
-    setTodos(JSON.parse(localStorage.getItem('todos')) || []);
-    setTodosNotes(JSON.parse(localStorage.getItem('todosNotes')) || []);
+    setTodos(JSON.parse(localStorage.getItem("todos")) || []);
+    setTodosNotes(JSON.parse(localStorage.getItem("todosNotes")) || []);
     setLoading(false);
   }, []);
 
   useEffect(() => {
     if (todos.length && todosNotes.length) {
-      localStorage.setItem('todos', JSON.stringify(todos));
-      localStorage.setItem('todosNotes', JSON.stringify(todosNotes));
+      localStorage.setItem("todos", JSON.stringify(todos));
+      localStorage.setItem("todosNotes", JSON.stringify(todosNotes));
       setActiveItem((prev) => prev || todos[0]);
     }
   }, [todos, todosNotes]);
 
   useEffect(() => {
-    if (!todos.lenght && !activeItem) return;
+    if (!todos.length && !activeItem) return;
     const candidate = todosNotes.find((note) => note.todoId === activeItem.id);
     setListNotes(candidate ? candidate.list : []);
     setTodos((prev) =>
@@ -137,10 +137,10 @@ function App() {
     <Container>
       <NotesWrapper>
         {loading ? (
-          'Загрузка...'
+          "АЗАЗАЗА..."
         ) : (
           <>
-            {' '}
+            {" "}
             <Sidebar
               items={todos}
               colors={colors}
@@ -161,7 +161,7 @@ function App() {
                   }
                 />
               )}
-            </NoteContainer>{' '}
+            </NoteContainer>{" "}
           </>
         )}
       </NotesWrapper>
